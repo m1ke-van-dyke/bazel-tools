@@ -1,13 +1,12 @@
 def _impl(ctx):
-    out = ctx.outputs.executable.path
     cmd = ctx.attr.command
     args = " ".join(["%s" % (s) for s in ctx.attr.arguments])
-    complete = "\n".join(["echo %s %s $(realpath \"%s\") >> %s" % (cmd, args, f.path, out) for f in ctx.files.srcs])
+    sources = " ".join(["$(realpath \"%s\")" % (f.path) for f in ctx.files.srcs])
 
     ctx.actions.run_shell(
       inputs = ctx.files.srcs,
       outputs = [ctx.outputs.executable],
-      command = complete,
+      command = "echo %s %s %s >> %s" % (cmd, args, sources, ctx.outputs.executable.path),
 
       execution_requirements = {
         "no-sandbox": "1",
@@ -17,7 +16,7 @@ def _impl(ctx):
       },
     )
 
-run_individual = rule(
+command = rule(
     implementation=_impl,
     executable=True,
     attrs={

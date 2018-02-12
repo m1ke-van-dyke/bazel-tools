@@ -1,16 +1,16 @@
-load("//tools:run_command.bzl", "run_command")
-load("//tools:run_individual.bzl", "run_individual")
+load("//tools:command.bzl", "command")
+load("//tools:individual.bzl", "individual")
 load("//tools:compilation_database.bzl", "empty")
 
 
-run_command(
+command(
 	name = "format",
 	command = "clang-format",
 	arguments = ["-style=chromium"],
 	srcs = glob(["**/*.*"])
 )
 
-run_individual(
+individual(
 	name = "format_indiv",
 	command = "clang-format",
 	arguments = ["-style=chromium"],
