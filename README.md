@@ -1,2 +1,2 @@
 # bazel-tools
-Usefull tools for working with bazel
+Useful tools for working with bazel
